@@ -4,16 +4,32 @@ RSpec.describe Album, type: :model do
   describe "validations" do
     it "is valid" do
       # instantiate a valid album and ensure it is valid
+      valid_album = double("Album", valid?: true)
+
+      expect(valid_album.valid?).to be true
     end
 
     it "is invalid without a name" do
       # instantiate an album without a name and ensure it is invalid
+      invalid_album = Album.new(name: nil, available: true, artist_id: 1)
+
+      expect(invalid_album.valid?).to be false
     end
   end
 
   describe "attributes" do
     it "has expected attributes" do
       # ensure exactly the expected attributes are present on an album
+      album = Album.new(name: "Album Name", available: true, artist_id: 1)
+  
+      expect(album.attribute_names.map(&:to_sym)).to contain_exactly(
+        :id,
+        :available,
+        :name,
+        :artist_id,
+        :created_at,
+        :updated_at
+      )
     end
   end
 
