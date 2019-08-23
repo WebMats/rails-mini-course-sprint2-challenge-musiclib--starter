@@ -1,6 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe "List Artists", type: :request do
+
+  context "with no artists" do
+    describe "GET /api/v1/artists" do
+      it "lists no artists" do
+        get api_v1_artists_path
+        json_body = JSON.parse(response.body).map(&:deep_symbolize_keys)
+
+        expect(response).to have_http_status(200)
+        expect(json_body.count).to eq(0)
+      end
+    end
+  end
+  
   context "with artists" do
     describe "GET /api/v1/artists" do
       before do
@@ -20,18 +33,6 @@ RSpec.describe "List Artists", type: :request do
         expect(json_body.last).to include({
           name: "Other Band"
         })
-      end
-    end
-  end
-
-  context "with no artists" do
-    describe "GET /api/v1/artists" do
-      it "lists no artists" do
-        get api_v1_artists_path
-        json_body = JSON.parse(response.body).map(&:deep_symbolize_keys)
-
-        expect(response).to have_http_status(200)
-        expect(json_body.count).to eq(0)
       end
     end
   end
